@@ -8,15 +8,16 @@ function DropdownCart() {
     const dispatch = useDispatch()
 
     const deleteBasketItem = async (cartItem) =>{
-        await Basket.deleteBasket(cartItem.id)
-        const basketId = JSON.parse(localStorage.getItem('basket')).id
+        await Basket.deleteBasket(cartItem?.id)
+        const basketId = JSON.parse(localStorage.getItem('basket'))?.id
         const  data = (await Basket.getBaskets(basketId))?.data?.data
         dispatch(setCart(data))
     }
     const cart = useSelector(state => state.cart.cart)
+    console.log(cart?.basketItems,'ferman')
     return (
         <div className="dropdown-box">
-            {cart?.basketItems?.length === 0 || !localStorage.getItem("basket") ? (<>
+            {cart?.basketItems?.length === 0 ? (<>
                 <h5 className="text-center">Səbətiniz boşdur</h5>
                 <Link to="/" className="btn btn-dark btn-md btn-rounded btn-icon-left"><i
                     className="d-icon-arrow-left"></i>ALIŞ-VERİŞƏ DAVAM ET</Link>
@@ -26,7 +27,7 @@ function DropdownCart() {
                         {cart.basketItems?.map(cartItem => (
                             <div key={cartItem.id} className="product product-cart">
                                 <figure className="product-media">
-                                    <a href="product.html">
+                                    <a target="_blank" href={`/product/` + cartItem?.product?.id}>
                                         <img src={process.env.REACT_APP_MEDIA_URL + cartItem.product?.productImages[0]?.path} alt="məhsulun şəkli" style={{width: 80, height: 90}}/>
                                     </a>
                                     <button

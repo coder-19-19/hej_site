@@ -4,11 +4,14 @@ import {useState} from "react";
 import {useNavigate} from 'react-router-dom'
 import {toast} from "react-toastify";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
+import {useDispatch} from "react-redux";
+import {setCart} from "../../Stores/cartStore";
 
 function Register() {
     const navigate = useNavigate()
     const [passwordShown, setPasswordShown] = useState(false)
     const [isRequested,setIsRequested] = useState(false)
+    const dispatch = useDispatch()
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
     };
@@ -47,7 +50,10 @@ function Register() {
                 basket:JSON.parse(localStorage.getItem('basket'))
             })
             localStorage.removeItem('token')
-            localStorage.setItem('token', data?.data)
+            localStorage.setItem('token', data?.data?.token)
+            if(data?.data?.basket) {
+                dispatch(setCart(data?.data?.basket))
+            }
             navigate('/')
             toast.success('Uğurla qeydiyyatdan keçildi', {
                 position: 'bottom-left'

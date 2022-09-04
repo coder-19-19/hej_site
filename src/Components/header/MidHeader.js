@@ -21,7 +21,7 @@ function MidHeader() {
     const [searchValue, setSearchValue] = useState('')
     const [isRequested, setIsRequested] = useState(false)
     const getBasket = async () => {
-        const basketId = JSON.parse(localStorage.getItem('basket')).id
+        const basketId = JSON.parse(localStorage.getItem('basket'))?.id
         const data = (await Basket.getBaskets(basketId))?.data?.data
         dispatch(setCart(data))
     }
@@ -151,12 +151,12 @@ function MidHeader() {
                             <Link to="/cart" className="cart-toggle label-block link" title={"Səbət"}>
                                 <div className="cart-label d-lg-show">
                                     <span className="cart-name">Səbət:</span>
-                                    {localStorage.getItem('basket') ? (
-                                        <span className="cart-price">{cart.totalLastPrice} AZN</span>) : (
+                                    {localStorage.getItem('basket') != null ? (
+                                        <span className="cart-price">{cart?.totalLastPrice} AZN</span>) : (
                                         <span className="cart-price">Boşdur</span>)}
                                 </div>
-                                <i className="d-icon-bag">{cart.totalCount > 0 &&
-                                    <span className="cart-count">{cart.totalCount}</span>}</i>
+                                <i className="d-icon-bag">{cart?.totalCount > 0 &&
+                                    <span className="cart-count">{cart?.totalCount}</span>}</i>
                             </Link>
                             <DropdownBag/>
                         </div>

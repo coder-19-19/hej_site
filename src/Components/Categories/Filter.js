@@ -39,25 +39,24 @@ function Filter({page,setPage}) {
     }
 
     useEffect(() => {
+        window.scrollTo(0,0)
         let search = location.search
         if (search) {
             search = search.replace('?', '')
             search = search.split('=')
             if (search?.includes('name')) {
-                filter({...filterData, [search[0]]: search[1]})
+                filter({...filterData, [search[0]]: search[1],page:page-1})
             } else {
                 setFilterData(prev => ({
                     ...prev,
                     [search[0]]: search[1]
                 }))
-                filter({...filterData, [search[0]]: search[1]})
+                filter({...filterData, [search[0]]: search[1],page:page-1})
             }
+        }else {
+            filter({...filterData,page:page-1})
         }
-    }, [])
-
-    useEffect(() => {
-        filter({...filterData, page:page-1})
-    },[page])
+    }, [page,location])
 
     const generateCategories = () => {
         return categories?.map(item => (

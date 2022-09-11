@@ -6,13 +6,13 @@ import {toast} from "react-toastify";
 import {useState} from "react";
 
 function Card({item}) {
-
+    console.log(item,'ferman')
     const dispatch = useDispatch()
     const [disabled,setDisabled] = useState(false)
     const addBasket = async item => {
         setDisabled(true)
         const body = {
-            product: {
+            productDetail: {
                 id:item?.id
             },
             count: 1,
@@ -23,7 +23,7 @@ function Card({item}) {
         const basketId = JSON.parse(localStorage.getItem('basket')).id
         const  data = (await Basket.getBaskets(basketId))?.data?.data
         dispatch(setCart(data))
-        toast.dark(`${item?.name} səbətə əlavə olundu`,{position:"bottom-left"})
+        toast.dark(`${item?.product?.name} səbətə əlavə olundu`,{position:"bottom-left"})
         setDisabled(false)
     }
     return (
@@ -31,17 +31,17 @@ function Card({item}) {
             <div className="product">
                 <figure className="product-media"
                         style={{borderBottom: "1px solid black", borderTop: "1px solid black"}}>
-                    <a target="_blank" href={`/product/${item?.id}`}>
-                        <img src={process.env.REACT_APP_MEDIA_URL + item?.productImages[0]?.path} alt="product"
+                    <a target="_blank" href={`/product/${item?.product?.id}`}>
+                        <img src={process.env.REACT_APP_MEDIA_URL + item?.product?.productImages?.[0]?.path} alt="product"
                              style={{width: 280, height: 315, objectFit: "contain"}}/>
                     </a>
-                    {item?.isNew &&
+                    {item?.product?.isNew &&
                         <div className="product-label-group">
                             <label className="product-label label-new">YENİ</label>
                         </div>
                     }
                     {item?.sale > 0 &&
-                        <div className={`product-label-group ${item.isNew && 'mt-6'}`}>
+                        <div className={`product-label-group ${item?.product?.isNew && 'mt-6'}`}>
                             <label className="product-label label-sale">{item?.sale}% ENDİRİM</label>
                         </div>
                     }
@@ -54,10 +54,10 @@ function Card({item}) {
                 </figure>
                 <div className="product-details text-capitalize">
                     <div>
-                        <span>{item?.subCategory.name} ({item?.subCategory.category?.name})</span>
+                        <span>{item?.product?.subCategory?.name} ({item?.product?.subCategory?.category?.name})</span>
                     </div>
                     <h3 className="product-name">
-                        <a target="_blank" href={`/product/${item?.id}`}>{item?.name}</a>
+                        <a target="_blank" href={`/product/${item?.product?.id}`}>{item?.product?.name}</a>
                     </h3>
                     <div className="product-price">
                         <ins

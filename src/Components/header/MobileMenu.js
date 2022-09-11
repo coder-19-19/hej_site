@@ -48,7 +48,9 @@ function MobileMenu() {
                         {!isRequested ? (
                             searchedData?.length > 0 ? (
                                 searchedData?.map(item => (
-                                    <Link to={`/product/${item?.id}`}>
+                                    <Link to={`/product/${item?.id}?productDetailId=${item?.productDetails?.[0]?.id}`} onClick={() => {
+                                        dispatch(setMobileMenuIsActive(false))
+                                    }}>
                                         <li key={item?.id} className="list-group-item custom-group-item"
                                             style={{
                                                 height: 70,
@@ -66,16 +68,18 @@ function MobileMenu() {
                                                 marginBottom: "auto",
                                                 paddingBottom: 5
                                             }}>
-                                                <div className="d-flex justify-content-center flex-column" style={{marginTop:5}}>
+                                                <div className="d-flex justify-content-center flex-column"
+                                                     style={{marginTop: 5}}>
                                                     <div className="d-inline-block product-name"
-                                                         style={{fontSize:15,fontWeight:700}}>{item?.name}</div>
+                                                         style={{
+                                                             fontSize: 15, fontWeight: 700
+                                                         }}>{item?.name} - {item?.productDetails?.[0]?.size}</div>
                                                     <div className="product-price">
                                                         <ins
-                                                            style={{color:"#999"}}
-                                                            className="new-price">{item?.sale > 0 ? (item?.lastPrice) : (item?.sellingPrice)} AZN
+                                                            className="new-price">{item.productDetails?.[0]?.sale > 0 ? (item.productDetails?.[0]?.lastPrice) : (item.productDetails?.[0]?.sellingPrice)} AZN
                                                         </ins>
                                                         <del
-                                                            className="old-price">{item?.sale > 0 && item?.sellingPrice + ' AZN'}</del>
+                                                            className="old-price">{item?.productDetails?.[0]?.sale > 0 && item.productDetails?.[0]?.sellingPrice + ' AZN'}</del>
                                                     </div>
                                                 </div>
                                             </div>

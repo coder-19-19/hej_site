@@ -15,9 +15,10 @@ function ItemsContainer() {
         dispatch(setCart(data))
     }
     const increaseItemCount = async item => {
+        console.log(item)
         const body = {
-            product: {
-                id:item?.product?.id
+            productDetail: {
+                id:item?.productDetail?.id
             },
             count: 1,
             basket: JSON.parse(localStorage.getItem('basket'))
@@ -27,12 +28,12 @@ function ItemsContainer() {
         const basketId = JSON.parse(localStorage.getItem('basket')).id
         const  data = (await Basket.getBaskets(basketId))?.data?.data
         dispatch(setCart(data))
-        toast.dark(`${item?.product?.name} sayı artırıldı`,{position:"bottom-left"})
+        toast.dark(`${item?.productDetail?.product?.name} sayı artırıldı`,{position:"bottom-left"})
     }
     const decreaseItemCount = async item => {
         const body = {
-            product: {
-                id:item?.product?.id
+            productDetail: {
+                id:item?.productDetail?.id
             },
             count: -1,
             basket: JSON.parse(localStorage.getItem('basket'))
@@ -42,7 +43,7 @@ function ItemsContainer() {
         const basketId = JSON.parse(localStorage.getItem('basket')).id
         const  data = (await Basket.getBaskets(basketId))?.data?.data
         dispatch(setCart(data))
-        toast.dark(`${item?.product?.name} sayı azaldıldı`,{position:"bottom-left"})
+        toast.dark(`${item?.productDetail?.product?.name} sayı azaldıldı`,{position:"bottom-left"})
     }
 
     return (
@@ -63,15 +64,15 @@ function ItemsContainer() {
                             <tr key={cartItem.id}>
                                 <td className="product-thumbnail">
                                     <figure className="product-media">
-                                        <Link to={`/product/${cartItem?.product?.id}`} style={{width:80}}>
-                                            <img src={process.env.REACT_APP_MEDIA_URL + cartItem.product?.productImages[0]?.path} style={{width: 80, height: 90}}
+                                        <Link to={`/product/${cartItem?.productDetail?.product?.id}?productDetailId=${cartItem?.productDetail?.id}`} style={{width:80}}>
+                                            <img src={process.env.REACT_APP_MEDIA_URL + cartItem?.productDetail?.product?.productImages[0]?.path} style={{width: 80, height: 90}}
                                                  alt="Məhsulun şəkli"/>
                                         </Link>
                                     </figure>
                                 </td>
                                 <td className="product-name">
                                     <div className="product-name-section">
-                                        <Link to={`/product/${cartItem?.product?.id}`}>{cartItem.product?.name}</Link>
+                                        <Link to={`/product/${cartItem?.productDetail?.product?.id}?productDetailId=${cartItem?.productDetail?.id}`}>{cartItem?.productDetail.product?.name} - {cartItem?.productDetail?.size}</Link>
                                     </div>
                                 </td>
                                 <td className="product-subtotal">

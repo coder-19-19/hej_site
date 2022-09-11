@@ -1,5 +1,4 @@
 import Basket from "../../api/basket"
-import {Link} from "react-router-dom";
 import basket from "../../api/basket";
 import {setCart} from "../../Stores/cartStore";
 import {useDispatch} from "react-redux";
@@ -11,20 +10,21 @@ function Card({item}) {
     const [disabled,setDisabled] = useState(false)
     const addBasket = async item => {
         setDisabled(true)
+        console.log(item)
         const body = {
-            product: {
-                id:item?.id
+            productDetail: {
+                id:item?.productDetails?.[0]?.id
             },
             count: 1,
             basket: JSON.parse(localStorage.getItem('basket'))
         }
         const res = await Basket.addBasket(body)
+        setDisabled(false)
         localStorage.setItem('basket',JSON.stringify(res?.data?.data))
         const basketId = JSON.parse(localStorage.getItem('basket')).id
         const  data = (await Basket.getBaskets(basketId))?.data?.data
         dispatch(setCart(data))
         toast.dark(`${item?.name} səbətə əlavə olundu`,{position:"bottom-left"})
-        setDisabled(false)
     }
 
     return (
@@ -36,7 +36,7 @@ function Card({item}) {
                 <figure className="product-media"
                         style={{borderBottom: "1px solid black", borderTop: "1px solid black"}}>
                     <a target="_blank" href={`/product/${item?.id}`}>
-                    <img src={process.env.REACT_APP_MEDIA_URL + item?.productImages[0]?.path} alt=""
+                    <img src={process.env.REACT_APP_MEDIA_URL + item?.productImages?.[0]?.path} alt=""
                              style={{height: "315px", width: "280px", objectFit: "contain"}}/>
                     </a>
                     {item?.isNew &&
@@ -44,9 +44,9 @@ function Card({item}) {
                             <label className="product-label label-new">YENİ</label>
                         </div>
                     }
-                    {item?.sale > 0 &&
+                    {item?.productDetails?.[0]?.sale > 0 &&
                         <div className="product-label-group mt-6">
-                            <label className="product-label label-sale">{item?.sale}% ENDİRİM</label>
+                            <label className="product-label label-sale">{item?.productDetails?.[0]?.sale}% ENDİRİM</label>
                         </div>
                     }
                     <div className="product-action">
@@ -67,9 +67,9 @@ function Card({item}) {
                     </h3>
                     <div className="product-price">
                         <ins
-                            className="new-price">{item?.sale > 0 ? (item?.lastPrice) : (item?.sellingPrice)} AZN
+                            className="new-price">{item?.productDetails?.[0]?.sale > 0 ? (item?.productDetails?.[0]?.lastPrice) : (item?.productDetails?.[0]?.sellingPrice)} AZN
                         </ins>
-                        <del className="old-price">{item?.sale > 0 && item?.sellingPrice + ' AZN'}</del>
+                        <del className="old-price">{item?.productDetails?.[0]?.sale > 0 && item?.productDetails?.[0]?.sellingPrice + ' AZN'}</del>
                     </div>
                 </div>
             </div>

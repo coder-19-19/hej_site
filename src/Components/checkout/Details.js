@@ -164,7 +164,7 @@ function Details() {
                                     <tbody>
                                     {cart?.basketItems?.map(cartItem => (
                                         <tr key={cartItem?.id}>
-                                            <td className="product-name">{cartItem?.product?.name}<span
+                                            <td className="product-name">{cartItem?.productDetail?.product?.name}<span
                                                 className="product-quantity font-weight-bold">× {cartItem?.count}</span>
                                             </td>
                                             <td className="product-total text-body font-weight-bold">{cartItem?.lastPrice} AZN</td>

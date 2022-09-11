@@ -343,6 +343,7 @@ function Main() {
                             <table className="table mt-3">
                                 <thead>
                                     <tr style={{color:'#ff675d',textAlign:'left'}}>
+                                        <th>Şəkil</th>
                                         <th>Ad</th>
                                         <th>Say</th>
                                         <th>Endirim</th>
@@ -351,9 +352,14 @@ function Main() {
                                 </thead>
                                 <tbody>
                                 {modal?.item?.orderItems?.map(item => (
-                                    <tr key={item?.id} style={{margin:'6px 0'}}>
+                                    <tr key={item?.id} style={{margin:'6px 0',cursor:'pointer'}} onClick={() => {
+                                        window.open(`/product/${item?.productDetail?.product?.id}?productDetailId=${item?.productDetail?.id}`)
+                                    }}>
+                                        <td style={{paddingBottom:'3px'}}>
+                                            <img style={{width:40,height:40,objectFit:'cover'}} src={process.env.REACT_APP_MEDIA_URL + item?.productDetail?.product?.productImages?.[0]?.path} alt="Məhsulun şəkili"/>
+                                        </td>
                                         <td>
-                                            {item?.product?.name}
+                                            {item?.productDetail?.product?.name} - {item?.productDetail?.size}
                                         </td>
                                         <td>
                                             <span>{item?.count}</span>

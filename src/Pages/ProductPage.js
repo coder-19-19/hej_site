@@ -1,5 +1,5 @@
 import Header from "../Components/header/Header";
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {Fragment, useEffect, useState} from "react";
 import Footer from "../Components/Footer/Footer";
 import Products from "../api/products";
@@ -13,10 +13,12 @@ import Loading from "../Components/Loading";
 function ProductPage() {
     const dispatch = useDispatch()
     const [isFetching,setIsFetching] = useState(false)
+    const [activeProductDetail,setActiveProductDetail] = useState({})
     const addBasket = async item => {
+        console.log(item)
         const body = {
-            product: {
-                id:item?.id
+            productDetail: {
+                id:activeProductDetail?.id
             },
             count: cartValue,
             basket: JSON.parse(localStorage.getItem('basket'))
@@ -47,10 +49,16 @@ function ProductPage() {
         setIsFetching(true)
         return await Products.getPopularProducts(4)
     }
+    const location = useLocation()
 
     useEffect(() => {
         fetchProduct().then(res => {
             setProduct(res?.data?.data)
+            if(window.location.href.includes('productDetailId')) {
+                setActiveProductDetail(res?.data?.data?.productDetails?.find(item => item?.id === location.search?.split('=')[1]))
+            }else {
+                setActiveProductDetail(res?.data?.data?.productDetails?.[0])
+            }
             setActiveImage(res?.data?.data?.productImages?.[0]?.id)
             setIsFetching(false)
         })
@@ -106,7 +114,21 @@ function ProductPage() {
                                         <div className="product-meta">
                                             Kateqoriya: <span className="product-sku">{product?.subCategory?.name}</span>
                                         </div>
-                                        <div className="product-price">{product?.lastPrice} AZN</div>
+                                        <div className="product-meta">
+                                            Artikul: <span className="product-sku">{product?.article}</span>
+                                        </div>
+                                        <div className="product-meta d-inline-flex flex-column">
+                                            <div>Ölçülər</div>
+                                            <div>
+                                                {product?.productDetails?.map(item => (
+                                                    <button onClick={() => {
+                                                        setCartValue(1)
+                                                        setActiveProductDetail(item)
+                                                    }} style={{borderColor:'#fff',background:activeProductDetail?.id === item?.id && '#ff675d'}} className="btn btn-sm btn-primary" key={item?.id}>{item?.size}</button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="product-price">{activeProductDetail?.lastPrice} AZN</div>
                                         <p className="product-short-desc">{product?.description}</p>
 
                                         <hr className="product-divider"/>
@@ -140,25 +162,19 @@ function ProductPage() {
                                                 <table className="table">
                                                     <tbody>
                                                     <tr>
-                                                        <th className="font-weight-semi-bold text-dark pl-0">Artikul</th>
-                                                        <td className="pl-4">{product?.article}</td>
+                                                        <th className="font-weight-semi-bold text-dark pl-0">Ölçü</th>
+                                                        <td className="pl-4">{activeProductDetail?.size}</td>
                                                     </tr>
                                                     <tr>
                                                         <th className="font-weight-semi-bold text-dark pl-0">Çəki
                                                         </th>
-                                                        <td className="pl-4">{product?.weight} qr</td>
+                                                        <td className="pl-4">{activeProductDetail?.weight} qr</td>
                                                     </tr>
                                                     <tr>
                                                         <th className="font-weight-semi-bold text-dark pl-0">Əyar
                                                         </th>
-                                                        <td className="pl-4">{product?.hallmarkValue}
+                                                        <td className="pl-4">{activeProductDetail?.hallmarkValue}
                                                         </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th className="font-weight-semi-bold text-dark border-no pl-0">
-                                                            Anbardaki sayı
-                                                        </th>
-                                                        <td className="border-no pl-4">{product?.stockValue}</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

@@ -32,6 +32,7 @@ export const getHomeData = () => {
     return async dispatch => {
         try {
             const [popularProducts] = await Promise.all([ProductService.getPopularProducts(4)])
+            console.log(popularProducts?.data?.data)
             dispatch(setPopularProducts(popularProducts?.data?.data))
         }catch (e) {
 

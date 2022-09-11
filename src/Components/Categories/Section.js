@@ -21,16 +21,18 @@ function Section({page,setPage}) {
                 <div className={"row cols-2 cols-sm-3 product-wrapper"}>
                     {generateProducts()}
                 </div>
-                <CustomPagination
-                    justifyContent="end"
-                    className="pagination-bar"
-                    currentPage={page}
-                    totalCount={products?.totalElements}
-                    pageSize={10}
-                    onPageChange={(page) => {
-                        setPage(page);
-                    }}
-                />
+                <div className="d-flex justify-content-center">
+                    <CustomPagination
+                        justifyContent="end"
+                        className="pagination-bar"
+                        currentPage={page}
+                        totalCount={products?.totalElements}
+                        pageSize={10}
+                        onPageChange={(page) => {
+                            setPage(page);
+                        }}
+                    />
+                </div>
             </div>
         </div>) : (<Loading type="bubbles" color="#ff675d" width={200} height={200} className="custom-loading"/>)
     )

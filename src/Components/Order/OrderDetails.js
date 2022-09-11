@@ -28,7 +28,7 @@ function OrderDetails(){
                     <tbody>
                     {order?.orderItems?.map(item => (
                         <tr key={item?.id}>
-                            <td className="product-name">{item?.product?.name} <span> <i className="fas fa-times"></i>
+                            <td className="product-name">{item?.productDetail?.product?.name} - {item?.productDetail?.size} qr <span> <i className="fas fa-times"></i>
                                 {item?.count}</span></td>
                             <td className="product-price">{item?.lastPrice} AZN</td>
                         </tr>

@@ -14,7 +14,7 @@ function DropdownCart() {
         dispatch(setCart(data))
     }
     const cart = useSelector(state => state.cart.cart)
-    console.log(cart?.basketItems,'ferman')
+    console.log(cart,'subhan')
     return (
         <div className="dropdown-box">
             {cart?.basketItems?.length === 0 ? (<>
@@ -27,8 +27,8 @@ function DropdownCart() {
                         {cart.basketItems?.map(cartItem => (
                             <div key={cartItem.id} className="product product-cart">
                                 <figure className="product-media">
-                                    <a target="_blank" href={`/product/` + cartItem?.product?.id}>
-                                        <img src={process.env.REACT_APP_MEDIA_URL + cartItem.product?.productImages[0]?.path} alt="məhsulun şəkli" style={{width: 80, height: 90}}/>
+                                    <a target="_blank" href={`/product/${cartItem?.productDetail?.product?.id}?productDetailId=${cartItem?.productDetail?.id}`}>
+                                        <img src={process.env.REACT_APP_MEDIA_URL + cartItem.productDetail?.product?.productImages[0]?.path} alt="məhsulun şəkli" style={{width: 80, height: 90}}/>
                                     </a>
                                     <button
                                         onClick={() => {
@@ -39,8 +39,8 @@ function DropdownCart() {
                                     </button>
                                 </figure>
                                 <div className="product-detail">
-                                    <a target="_blank" href={'/product/' + cartItem?.product?.id}
-                                       className="product-name">{cartItem.product?.name}</a>
+                                    <a target="_blank" href={'/product/' + cartItem?.productDetail?.product?.id}
+                                       className="product-name">{cartItem?.productDetail?.product?.name}</a>
                                     <div className="price-box">
                                         <span className="product-quantity">{cartItem.count}</span>
                                         <span className="product-price">{cartItem.lastPrice} AZN</span>
